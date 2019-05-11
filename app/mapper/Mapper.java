@@ -9,12 +9,13 @@ import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author AKBAR <akbar.attijani@gmail.com>
  */
 public class Mapper {
-    public <T> List<T> toModel(ResultSet resultSet, Class<?> c) {
+    public <T> List<T> toModels(ResultSet resultSet, Class<?> c) {
         List<T> result = new ArrayList<>();
 
         try {
@@ -54,7 +55,7 @@ public class Mapper {
         return result;
     }
 
-    public <T> T toSingleModel(ResultSet resultSet, Class<?> c) throws IllegalAccessException, InstantiationException {
+    public <T> T toModel(ResultSet resultSet, Class<?> c) throws IllegalAccessException, InstantiationException {
         try {
             Object clas = c.newInstance();
 
@@ -92,7 +93,7 @@ public class Mapper {
         }
     }
 
-    public <T> List<T> toModel(JsonNode jsonNode, Class<?> c) {
+    public <T> List<T> toModels(JsonNode jsonNode, Class<?> c) {
         List<T> result = new ArrayList<>();
 
         try {
@@ -134,7 +135,7 @@ public class Mapper {
         return result;
     }
 
-    public <T> T toSingleModel(JsonNode jsonNode, Class<?> c) throws IllegalAccessException, InstantiationException {
+    public <T> T toModel(JsonNode jsonNode, Class<?> c) throws IllegalAccessException, InstantiationException {
         try {
             // Get Fields
             Object clas = c.newInstance();
@@ -163,6 +164,41 @@ public class Mapper {
             }
 
             return ((T) clas);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ((T) c.newInstance());
+        }
+    }
+
+    public <T> T toModel(Map map, Class<?> c) throws IllegalAccessException, InstantiationException {
+        try {
+            // Get Fields
+            Object clas = c.newInstance();
+            java.lang.reflect.Field[] fields = c.getDeclaredFields();
+
+            for (java.lang.reflect.Field f : fields) {
+                if (f.isAnnotationPresent(mapper.annotation.Map.class)) {
+                    Annotation field = f.getAnnotation(mapper.annotation.Map.class);
+                    String fieldName = getAnnotationValue("key", field).toString();
+                    f.setAccessible(true);
+
+                    // set data object
+                    Class<?> dataType = f.getType();
+                    if (dataType == String.class) {
+                        f.set(clas, map.get(dataType).toString());
+                    } else if (dataType == Integer.class || dataType == int.class) {
+                        f.setInt(clas, Integer.parseInt(map.get(dataType).toString()));
+                    } else if (dataType == Double.class || dataType == double.class) {
+                        f.setDouble(clas, Double.parseDouble(map.get(dataType).toString()));
+                    } else if (dataType == Long.class || dataType == long.class) {
+                        f.setLong(clas, Long.parseLong(map.get(dataType).toString()));
+                    } else {
+                        throw new Exception("Data Type not valid. Apply only String, Integer, Double, or Long");
+                    }
+                }
+            }
+
+            return (((T) clas));
         } catch (Exception e) {
             e.printStackTrace();
             return ((T) c.newInstance());

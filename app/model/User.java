@@ -11,10 +11,6 @@ public class User {
     @JsonField(key = "id")
     private int id;
 
-    @Column(name = "nip")
-    @JsonField(key = "nip")
-    private int nip;
-
     @Column(name = "name")
     @JsonField(key = "name")
     private String name;
@@ -23,20 +19,20 @@ public class User {
     @JsonField(key = "password")
     private String password;
 
+    @Column(name = "email")
+    @JsonField(key = "email")
+    private String email;
+
+    @Column(name = "address")
+    @JsonField(key = "address")
+    private String address;
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getNip() {
-        return nip;
-    }
-
-    public void setNip(int nip) {
-        this.nip = nip;
     }
 
     public String getName() {
@@ -53,5 +49,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

@@ -1,7 +1,7 @@
 
 // @GENERATOR:play-routes-compiler
-// @SOURCE:D:/Skripsi/conf/routes
-// @DATE:Sat May 11 22:40:59 ICT 2019
+// @SOURCE:D:/Project/eprinting-service/services/conf/routes
+// @DATE:Sun May 12 06:16:18 ICT 2019
 
 
 package router {
