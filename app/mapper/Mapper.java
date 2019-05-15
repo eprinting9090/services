@@ -185,13 +185,13 @@ public class Mapper {
                     // set data object
                     Class<?> dataType = f.getType();
                     if (dataType == String.class) {
-                        f.set(clas, map.get(dataType).toString());
+                        f.set(clas, map.get(fieldName).toString());
                     } else if (dataType == Integer.class || dataType == int.class) {
-                        f.setInt(clas, Integer.parseInt(map.get(dataType).toString()));
+                        f.setInt(clas, Integer.parseInt(map.get(fieldName).toString()));
                     } else if (dataType == Double.class || dataType == double.class) {
-                        f.setDouble(clas, Double.parseDouble(map.get(dataType).toString()));
+                        f.setDouble(clas, Double.parseDouble(map.get(fieldName).toString()));
                     } else if (dataType == Long.class || dataType == long.class) {
-                        f.setLong(clas, Long.parseLong(map.get(dataType).toString()));
+                        f.setLong(clas, Long.parseLong(map.get(fieldName).toString()));
                     } else {
                         throw new Exception("Data Type not valid. Apply only String, Integer, Double, or Long");
                     }
